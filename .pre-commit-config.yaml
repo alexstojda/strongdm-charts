@@ -157,8 +157,31 @@ repos:
         language: system
         pass_filenames: false
 
+    # Server side checks
+    -   id: server-side-proxy-check
+        name: Kubectl apply | proxy
+        entry: /bin/bash -c 'helm -n default template deployments/sdm-proxy --set
+          strongdm.auth.secretName=foo | kubectl --context docker-desktop apply -f - --dry-run=server
+          --server-side'
+        language: system
+        pass_filenames: false
+    -   id: server-side-relay-check
+        name: Kubectl apply | relay
+        entry: /bin/bash -c 'helm -n default template deployments/sdm-relay --set
+          strongdm.auth.secretName=foo | kubectl --context docker-desktop apply -f - --dry-run=server
+          --server-side'
+        language: system
+        pass_filenames: false
+    -   id: server-side-client-check
+        name: Kubectl apply | client
+        entry: /bin/bash -c 'helm -n default template deployments/sdm-client --set
+          strongdm.auth.secretName=foo | kubectl --context docker-desktop apply -f - --dry-run=server
+          --server-side'
+        language: system
+        pass_filenames: false
+
 -   repo: https://github.com/losisin/helm-values-schema-json
-    rev: v2.5.0
+    rev: v2.6.0
     hooks:
     -   id: helm-schema
         name: helm-schema | relay
